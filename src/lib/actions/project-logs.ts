@@ -17,7 +17,7 @@ export async function getProjectLogsByProjectId(projectId: string) {
   try {
     console.log("Fetching project logs for projectId:", projectId)
     console.log("Table used: activity_logs")
-    const supabase = createServerComponentClient()
+    const supabase = await createServerComponentClient()
     const { data, error } = await supabase
       .from("activity_logs")
       .select("*")
@@ -41,7 +41,7 @@ export async function getAllProjectLogs() {
   try {
     console.log("Fetching all project logs")
     console.log("Table used: activity_logs")
-    const supabase = createServerComponentClient()
+    const supabase = await createServerComponentClient()
     const { data, error } = await supabase
       .from("activity_logs")
       .select(`
@@ -76,7 +76,7 @@ export async function createProjectLog(input: CreateProjectLogInput) {
     console.log("Table used: activity_logs")
     console.log("Input payload:", JSON.stringify(input, null, 2))
     
-    const supabase = createServerComponentClient()
+    const supabase = await createServerComponentClient()
     
     console.log("About to execute Supabase insert...")
     const { data, error } = await supabase

@@ -15,7 +15,7 @@ const dummyActivityLogs = [
 
 export async function getActivityLogsByProjectId(projectId: string) {
   try {
-    const supabase = createServerComponentClient()
+    const supabase = await createServerComponentClient()
     const { data, error } = await supabase
       .from("activity_logs")
       .select("*")
@@ -36,7 +36,7 @@ export async function getActivityLogsByProjectId(projectId: string) {
 
 export async function createActivityLog(input: CreateActivityLogInput) {
   try {
-    const supabase = createServerComponentClient()
+    const supabase = await createServerComponentClient()
     const { data, error } = await supabase
       .from("activity_logs")
       .insert([input])

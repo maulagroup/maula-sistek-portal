@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useTransition, useEffect, useCallback } from "react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
@@ -20,19 +19,6 @@ import { getClients } from "@/lib/actions/clients"
 import type { Project, CreateProjectInput, ProjectStatus } from "@/types/project"
 import type { Client } from "@/types/client"
 import { toast } from "sonner"
-
-const STATUS_OPTIONS: ProjectStatus[] = [
-  "Leads",
-  "DP & Planning",
-  "UI/UX Design",
-  "Development",
-  "Internal Testing",
-  "Client Review",
-  "Revision",
-  "Pelunasan & Deploy",
-  "Maintenance",
-  "Archived",
-]
 
 const STATUS_COLORS: Record<ProjectStatus, string> = {
   "Leads": "bg-blue-900/30 text-blue-400 border-blue-800",
@@ -301,7 +287,6 @@ const EmptyState = ({
 )
 
 export default function ProjectsPage() {
-  const router = useRouter()
   const [projects, setProjects] = useState<Project[]>([])
   const [clients, setClients] = useState<Client[]>([])
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
@@ -323,6 +308,24 @@ export default function ProjectsPage() {
     pic_internal: null,
     catatan: null,
   })
+
+  const resetForm = useCallback(() => {
+    setFormData({
+      nama_project: "",
+      client_id: "",
+      jenis_layanan: "",
+      status: "Leads",
+      domain: null,
+      deployment_platform: null,
+      deadline: null,
+      harga_project: null,
+      biaya_renewal: null,
+      tanggal_renewal: null,
+      pic_internal: null,
+      catatan: null,
+    })
+    setEditingProject(null)
+  }, [])
 
   const loadData = useCallback(() => {
     setIsLoading(true)
@@ -354,7 +357,7 @@ export default function ProjectsPage() {
     startTransition(async () => {
       try {
         if (editingProject) {
-          await updateProject({ ...formData, id: editingProject.id } as any)
+          await updateProject({ ...formData, id: editingProject.id } as Partial<CreateProjectInput> & { id: string })
           toast.success("Project berhasil diupdate")
         } else {
           await createProject(formData as CreateProjectInput)
@@ -370,7 +373,7 @@ export default function ProjectsPage() {
         })
       }
     })
-  }, [formData, editingProject, loadData])
+  }, [formData, editingProject, loadData, resetForm])
 
   const handleEdit = useCallback((project: Project) => {
     setEditingProject(project)
@@ -407,24 +410,6 @@ export default function ProjectsPage() {
       }
     })
   }, [deletingProjectId, loadData])
-
-  const resetForm = useCallback(() => {
-    setFormData({
-      nama_project: "",
-      client_id: "",
-      jenis_layanan: "",
-      status: "Leads",
-      domain: null,
-      deployment_platform: null,
-      deadline: null,
-      harga_project: null,
-      biaya_renewal: null,
-      tanggal_renewal: null,
-      pic_internal: null,
-      catatan: null,
-    })
-    setEditingProject(null)
-  }, [])
 
   useEffect(() => {
     loadData()

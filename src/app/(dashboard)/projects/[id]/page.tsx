@@ -102,7 +102,7 @@ export default function ProjectDetailPage() {
         const updatedProject = await updateProject({ 
           ...formData, 
           id: params.id as string 
-        } as any)
+        } as Partial<import("@/types/project").CreateProjectInput> & { id: string })
         setProject(updatedProject)
         toast.success("Project berhasil diupdate")
         setIsEditDialogOpen(false)

@@ -33,7 +33,7 @@ export default function LoginPage() {
       } else {
         router.push("/");
       }
-    } catch (err) {
+    } catch {
       setError("Terjadi kesalahan");
     } finally {
       setLoading(false);

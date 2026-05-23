@@ -4,7 +4,7 @@ import { createServerComponentClient } from "@/lib/supabase/server";
 import type { CreateClientInput, UpdateClientInput } from "@/types/client";
 
 export async function getClients() {
-  const supabase = createServerComponentClient();
+  const supabase = await createServerComponentClient();
   const { data, error } = await supabase
     .from("clients")
     .select("*")
@@ -19,7 +19,7 @@ export async function getClients() {
 }
 
 export async function getClientById(id: string) {
-  const supabase = createServerComponentClient();
+  const supabase = await createServerComponentClient();
   const { data, error } = await supabase
     .from("clients")
     .select("*")
@@ -35,7 +35,7 @@ export async function getClientById(id: string) {
 }
 
 export async function createClient(input: CreateClientInput) {
-  const supabase = createServerComponentClient();
+  const supabase = await createServerComponentClient();
   const { data, error } = await supabase
     .from("clients")
     .insert([input])
@@ -51,7 +51,7 @@ export async function createClient(input: CreateClientInput) {
 }
 
 export async function updateClient(input: UpdateClientInput) {
-  const supabase = createServerComponentClient();
+  const supabase = await createServerComponentClient();
   const { data, error } = await supabase
     .from("clients")
     .update(input)
@@ -68,7 +68,7 @@ export async function updateClient(input: UpdateClientInput) {
 }
 
 export async function deleteClient(id: string) {
-  const supabase = createServerComponentClient();
+  const supabase = await createServerComponentClient();
   const { error } = await supabase.from("clients").delete().eq("id", id);
 
   if (error) {

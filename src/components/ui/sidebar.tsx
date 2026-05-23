@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 import { Menu, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 
 const SidebarContext = React.createContext<{
   open: boolean
-  setOpen: (open: boolean) => void
+  setOpen: (open: boolean | ((prev: boolean) => boolean)) => void
   isMobile: boolean
 }>({
   open: true,
@@ -191,9 +191,9 @@ export function SidebarMenuButton({
   )
 }
 
-export function SidebarInset({ children }: { children: React.ReactNode }) {
+export function SidebarInset({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={`flex flex-col min-h-screen ${className || ''}`}>
       {children}
     </div>
   )
