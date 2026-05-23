@@ -14,8 +14,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Edit2, Calendar, DollarSign, Globe, Server, User, FileText, Loader2 } from "lucide-react"
 import { getProjectById, updateProject } from "@/lib/actions/projects"
 import { getClients } from "@/lib/actions/clients"
-import type { Project, CreateProjectInput, ProjectStatus } from "@/types/project"
-import type { Client } from "@/types/client"
+import type { Project, CreateProjectInput } from "@/types"
+import type { Client } from "@/types"
+import { PROJECT_STATUS, type ProjectStatus } from "@/lib/constants"
 import { toast } from "sonner"
 import { ProjectActivityTimeline } from "@/components/project-activity-timeline"
 

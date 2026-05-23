@@ -5,23 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Clock, User, MessageSquare, FolderKanban, Building2 } from "lucide-react"
-import { getAllProjectLogs } from "@/lib/actions/project-logs"
-import type { ProjectLog } from "@/types/project-log"
+import { getAllActivityLogs } from "@/lib/actions/activity-logs"
+import type { ActivityLog } from "@/types"
 import { toast } from "sonner"
 
 export default function ActivityLogsPage() {
-  const [projectLogs, setProjectLogs] = useState<ProjectLog[]>([])
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [, startTransition] = useTransition()
 
-  const loadProjectLogs = useCallback(() => {
+  const loadActivityLogs = useCallback(() => {
     setIsLoading(true)
     startTransition(async () => {
       try {
-        const data = await getAllProjectLogs()
-        setProjectLogs(Array.isArray(data) ? data : [])
+        const data = await getAllActivityLogs()
+        setActivityLogs(Array.isArray(data) ? data : [])
       } catch (err) {
-        console.error("Failed to load project logs:", err)
+        console.error("Failed to load activity logs:", err)
         toast.error("Gagal memuat activity log", {
           description: err instanceof Error ? err.message : "Terjadi kesalahan"
         })
@@ -32,8 +32,8 @@ export default function ActivityLogsPage() {
   }, [])
 
   useEffect(() => {
-    loadProjectLogs()
-  }, [loadProjectLogs])
+    loadActivityLogs()
+  }, [loadActivityLogs])
 
   return (
     <div className="space-y-6">
@@ -64,7 +64,7 @@ export default function ActivityLogsPage() {
                 </div>
               ))}
             </div>
-          ) : projectLogs.length === 0 ? (
+          ) : activityLogs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <div className="bg-muted rounded-full p-6 mb-4">
                 <MessageSquare className="h-12 w-12 text-muted-foreground" />
@@ -76,8 +76,8 @@ export default function ActivityLogsPage() {
             </div>
           ) : (
             <div className="space-y-0">
-              {projectLogs.map((log, index) => (
-                <div key={log.id} className={`flex gap-4 py-6 ${index < projectLogs.length - 1 ? 'border-b border-border' : ''}`}>
+              {activityLogs.map((log, index) => (
+                <div key={log.id} className={`flex gap-4 py-6 ${index < activityLogs.length - 1 ? 'border-b border-border' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                       <User className="h-5 w-5" />

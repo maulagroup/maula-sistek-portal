@@ -16,8 +16,9 @@ import Link from "next/link"
 import { Plus, Edit2, Trash2, Loader2, FolderKanban, Eye } from "lucide-react"
 import { getProjects, createProject, updateProject, deleteProject } from "@/lib/actions/projects"
 import { getClients } from "@/lib/actions/clients"
-import type { Project, CreateProjectInput, ProjectStatus } from "@/types/project"
-import type { Client } from "@/types/client"
+import type { Project, CreateProjectInput } from "@/types"
+import type { Client } from "@/types"
+import { PROJECT_STATUS, type ProjectStatus } from "@/lib/constants"
 import { toast } from "sonner"
 
 const STATUS_COLORS: Record<ProjectStatus, string> = {

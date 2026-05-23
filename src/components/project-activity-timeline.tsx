@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Plus, Loader2, MessageSquare, Clock, User } from "lucide-react"
-import { getProjectLogsByProjectId, createProjectLog } from "@/lib/actions/project-logs"
-import type { ProjectLog } from "@/types/project-log"
+import { getActivityLogsByProjectId, createActivityLog } from "@/lib/actions/activity-logs"
+import type { ActivityLog } from "@/types"
 import { toast } from "sonner"
 
 interface ProjectActivityTimelineProps {
@@ -16,20 +16,16 @@ interface ProjectActivityTimelineProps {
 }
 
 export function ProjectActivityTimeline({ projectId }: ProjectActivityTimelineProps) {
-  const [projectLogs, setProjectLogs] = useState<ProjectLog[]>([])
+  const [projectLogs, setProjectLogs] = useState<ActivityLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [pesan, setPesan] = useState("")
   const [dibuatOleh, setDibuatOleh] = useState("Admin")
 
-  console.log("ProjectActivityTimeline props:", { projectId })
-
   const loadProjectLogs = useCallback(async () => {
-    console.log("loadProjectLogs called for projectId:", projectId)
     setIsLoading(true)
     try {
-      const data = await getProjectLogsByProjectId(projectId)
-      console.log("loadProjectLogs returned data:", data)
+      const data = await getActivityLogsByProjectId(projectId)
       setProjectLogs(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error("Failed to load project logs:", err)
@@ -41,8 +37,6 @@ export function ProjectActivityTimeline({ projectId }: ProjectActivityTimelinePr
 
   const handleAddActivity = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("handleAddActivity called")
-    console.log("Current state:", { projectId, pesan, dibuatOleh })
 
     if (!pesan.trim()) {
       toast.error("Mohon isi pesan")
@@ -61,13 +55,7 @@ export function ProjectActivityTimeline({ projectId }: ProjectActivityTimelinePr
 
     setIsSubmitting(true)
     try {
-      console.log("Calling createProjectLog with:", {
-        project_id: projectId,
-        pesan: pesan.trim(),
-        dibuat_oleh: dibuatOleh.trim(),
-      })
-      
-      await createProjectLog({
+      await createActivityLog({
         project_id: projectId,
         pesan: pesan.trim(),
         dibuat_oleh: dibuatOleh.trim(),

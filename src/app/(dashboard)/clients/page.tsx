@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Plus, Edit2, Trash2, Loader2, Users, UserPlus } from "lucide-react"
 import { getClients, createClient, updateClient, deleteClient } from "@/lib/actions/clients"
-import type { Client, CreateClientInput } from "@/types/client"
+import type { Client, CreateClientInput } from "@/types"
 import { toast } from "sonner"
 
 export default function ClientsPage() {

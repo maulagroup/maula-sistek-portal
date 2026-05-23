@@ -1,80 +1,25 @@
-"use server"
+"use server";
 
-import { createServerComponentClient } from "@/lib/supabase/server";
-import type { CreateClientInput, UpdateClientInput } from "@/types/client";
+import { ClientRepository } from "@/lib/db/clients";
+import type { CreateClientInput, UpdateClientInput } from "@/types";
 
 export async function getClients() {
-  const supabase = await createServerComponentClient();
-  const { data, error } = await supabase
-    .from("clients")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Supabase Error (getClients):", error);
-    throw new Error(error.message);
-  }
-
-  return data ?? [];
+  return await ClientRepository.getAll();
 }
 
 export async function getClientById(id: string) {
-  const supabase = await createServerComponentClient();
-  const { data, error } = await supabase
-    .from("clients")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) {
-    console.error("Supabase Error (getClientById):", error);
-    throw new Error(error.message);
-  }
-
-  return data;
+  return await ClientRepository.getById(id);
 }
 
 export async function createClient(input: CreateClientInput) {
-  const supabase = await createServerComponentClient();
-  const { data, error } = await supabase
-    .from("clients")
-    .insert([input])
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Supabase Error (createClient):", error);
-    throw new Error(error.message);
-  }
-
-  return data;
+  return await ClientRepository.create(input);
 }
 
 export async function updateClient(input: UpdateClientInput) {
-  const supabase = await createServerComponentClient();
-  const { data, error } = await supabase
-    .from("clients")
-    .update(input)
-    .eq("id", input.id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Supabase Error (updateClient):", error);
-    throw new Error(error.message);
-  }
-
-  return data;
+  return await ClientRepository.update(input);
 }
 
 export async function deleteClient(id: string) {
-  const supabase = await createServerComponentClient();
-  const { error } = await supabase.from("clients").delete().eq("id", id);
-
-  if (error) {
-    console.error("Supabase Error (deleteClient):", error);
-    throw new Error(error.message);
-  }
-
+  await ClientRepository.delete(id);
   return { success: true };
 }
