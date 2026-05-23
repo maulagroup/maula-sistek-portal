@@ -12,7 +12,7 @@ import { toast } from "sonner"
 export default function ActivityLogsPage() {
   const [projectLogs, setProjectLogs] = useState<ProjectLog[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
 
   const loadProjectLogs = useCallback(() => {
     setIsLoading(true)
