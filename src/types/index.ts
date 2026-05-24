@@ -2,10 +2,10 @@ import type { ProjectStatus, UserRole } from "@/lib/constants";
 
 export interface User {
   id: string;
-  full_name: string | null;
+  nama: string | null;
+  email: string | null;
   role: UserRole;
   created_at: string;
-  updated_at: string;
 }
 
 export interface Client {

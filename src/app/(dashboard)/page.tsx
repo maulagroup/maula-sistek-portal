@@ -23,6 +23,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { getProjects } from "@/lib/actions/projects";
 import type { Project } from "@/types";
+import { DashboardRecentActivity } from "@/components/dashboard-recent-activity";
+import { DashboardQuickActions } from "@/components/dashboard-quick-actions";
 
 type ReminderCategory =
   | "renewal-overdue"
@@ -105,7 +107,7 @@ export default function DashboardPage() {
 
   const reminderStats: ReminderStats[] = [
     {
-      title: "Renewal Overdue",
+      title: "Expired Project",
       count: reminders["renewal-overdue"].length,
       icon: AlertCircle,
       color: "bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20",
@@ -180,7 +182,7 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground mt-1">
-          Selamat datang di Portal Maula SisTek
+          Informasi penting tentang proyek dan client.
         </p>
       </div>
 
@@ -240,7 +242,7 @@ export default function DashboardPage() {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Reminder & Alerts</h2>
+        <h2 className="text-xl font-semibold mb-4">Reminder</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {reminderStats.map((stat) => (
             <Card
@@ -312,6 +314,11 @@ export default function DashboardPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DashboardQuickActions />
+        <DashboardRecentActivity />
+      </div>
     </div>
   );
 }

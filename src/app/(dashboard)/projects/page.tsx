@@ -422,7 +422,7 @@ export default function ProjectsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
           <p className="text-muted-foreground mt-1">
-            Kelola semua project Anda
+            Halaman Management Proyek.
           </p>
         </div>
         {projects.length > 0 && (

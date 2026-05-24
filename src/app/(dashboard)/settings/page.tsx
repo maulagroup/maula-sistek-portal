@@ -6,7 +6,7 @@ export default function SettingsPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
         <p className="text-muted-foreground mt-1">
-          Pengaturan aplikasi
+          Halaman Pengaturan Portal.
         </p>
       </div>
 
@@ -16,7 +16,7 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm">
-            Konten pengaturan akan ditampilkan di sini
+            Fitur pengaturan akan ditampilkan di sini - Saat ini belum tersedia.
           </p>
         </CardContent>
       </Card>

@@ -51,7 +51,7 @@ export function AppSidebar() {
             <LayoutDashboard className="h-5 w-5 text-white" />
           </div>
           {open && (
-            <span className="text-lg font-bold">Maula SisTek</span>
+            <span className="text-lg font-bold">Maula Portal</span>
           )}
         </div>
       </SidebarHeader>

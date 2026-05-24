@@ -199,7 +199,7 @@ export default function ClientsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Clients</h1>
           <p className="text-muted-foreground mt-1">
-            Kelola semua client Anda
+            Halaman Management Client.
           </p>
         </div>
         {(clients ?? []).length > 0 && (

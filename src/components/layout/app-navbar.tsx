@@ -1,15 +1,20 @@
 "use client"
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Bell, Search, LogOut } from "lucide-react"
+import { Bell, Search, LogOut, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { createClientComponentClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/providers"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function AppNavbar() {
   const router = useRouter()
   const supabase = createClientComponentClient()
+  const { user, isLoading: authLoading } = useAuth()
+
+  console.log("NAVBAR USER:", user)
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -28,13 +33,25 @@ export function AppNavbar() {
           />
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon">
           <Bell className="h-5 w-5" />
         </Button>
-        <Button variant="ghost" size="icon" onClick={handleLogout}>
-          <LogOut className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50">
+            <User className="h-4 w-4 text-muted-foreground" />
+            {authLoading ? (
+              <Skeleton className="h-4 w-24" />
+            ) : (
+              <span className="text-sm font-medium">
+                {user?.nama || "User"}
+              </span>
+            )}
+          </div>
+          <Button variant="ghost" size="icon" onClick={handleLogout}>
+            <LogOut className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </header>
   )

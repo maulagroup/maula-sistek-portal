@@ -24,23 +24,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const fetchUser = useCallback(async () => {
     setIsLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      console.log("Auth Session:", session);
+      console.log("Session Error:", sessionError);
 
       if (!session) {
+        console.log("No session found");
         setUser(null);
         setRole(null);
         setIsLoading(false);
         return;
       }
 
+      console.log("Fetching user profile for ID:", session.user.id);
+
       const { data: userData, error } = await supabase
         .from("users")
-        .select("*")
+        .select("id, nama, email, role, created_at")
         .eq("id", session.user.id)
         .single();
 
+      console.log("PROFILE USER:", userData);
+      console.log("Fetch Error:", error);
+
       if (error) {
-        console.error("Failed to fetch user:", error);
+        console.error("Failed to fetch user profile:", error);
         setUser(null);
         setRole(null);
       } else {
