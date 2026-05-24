@@ -58,11 +58,14 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session && request.nextUrl.pathname !== "/login") {
+  const isLoginPage = request.nextUrl.pathname === "/login";
+  const isDashboardPage = request.nextUrl.pathname === "/" || request.nextUrl.pathname.startsWith("/clients") || request.nextUrl.pathname.startsWith("/projects") || request.nextUrl.pathname.startsWith("/activity-logs") || request.nextUrl.pathname.startsWith("/credentials") || request.nextUrl.pathname.startsWith("/settings");
+
+  if (!session && isDashboardPage) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (session && request.nextUrl.pathname === "/login") {
+  if (session && isLoginPage) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -70,5 +73,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|api|public).*)",
+  ],
 };

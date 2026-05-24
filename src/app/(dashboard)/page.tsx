@@ -1,33 +1,11 @@
-"use client";
+import { requireAuth } from "@/lib/auth/server";
+import { DashboardPageClient } from "./dashboard-page-client";
 
-import { useState, useMemo, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Calendar,
-  AlertCircle,
-  Clock,
-  Wrench,
-  Users,
-  FolderKanban,
-  TrendingUp,
-  X,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { getProjects } from "@/lib/actions/projects";
-import type { Project } from "@/types";
-import { DashboardRecentActivity } from "@/components/dashboard-recent-activity";
-import { DashboardQuickActions } from "@/components/dashboard-quick-actions";
-import { AddClientModal } from "@/components/add-client-modal";
-import { AddProjectModal } from "@/components/add-project-modal";
-import { AddActivityModal } from "@/components/add-activity-modal";
+export default async function DashboardPage() {
+  await requireAuth();
+  return <DashboardPageClient />;
+}
+
 
 type ReminderCategory =
   | "renewal-overdue"
