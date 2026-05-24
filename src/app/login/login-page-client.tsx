@@ -39,7 +39,7 @@ const ecosystemIcons = [
 ];
 
 // Indonesia map URL - fill this with your map image URL
-const INDONESIA_MAP_URL = "";
+const INDONESIA_MAP_URL = "https://i.pinimg.com/1200x/4f/a6/b3/4fa6b3e76faf7f46fe55921f3a5a6869.jpg";
 
 export function LoginPageClient() {
   const router = useRouter();
@@ -104,20 +104,20 @@ export function LoginPageClient() {
         </div>
       )}
 
-      <div className="relative z-10 w-full max-w-2xl space-y-8">
+      <div className="relative z-10 w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white">
+          <h1 className="text-5xl font-black tracking-tight text-white">
             MAULA
           </h1>
-          <p className="text-slate-500 text-xs sm:text-sm tracking-[0.4em] uppercase">
+          <p className="text-slate-500 text-xs tracking-[0.4em] uppercase">
             Ecosystem Access
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-slate-950/90 border border-slate-800 rounded-lg p-6 sm:p-8 shadow-2xl">
-          <form onSubmit={handleLogin} className="space-y-6">
+        <div className="bg-slate-950/90 border border-slate-800 rounded-lg p-6 shadow-2xl">
+          <form onSubmit={handleLogin} className="space-y-5">
             {error && (
               <div className="bg-red-950/50 border border-red-800/50 rounded-md p-3 text-sm text-red-400">
                 {error}
@@ -175,7 +175,7 @@ export function LoginPageClient() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-b from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 border border-slate-600 text-white font-semibold h-11 shadow-lg"
+              className="w-full bg-gradient-to-b from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 border border-slate-600 text-white font-semibold h-10 shadow-lg"
             >
               {loading ? "Loading..." : "Login"}
             </Button>
@@ -183,7 +183,7 @@ export function LoginPageClient() {
         </div>
 
         {/* Connected Ecosystem */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <p className="text-center text-slate-500 text-[10px] tracking-[0.3em] uppercase">
             Connected Ecosystem
           </p>
