@@ -1,10 +1,10 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
+import { createServerComponentClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 export async function requireAuth() {
-  const supabase = createServerClient();
+  const supabase = await createServerComponentClient();
   
   const {
     data: { session },
