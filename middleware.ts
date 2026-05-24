@@ -2,11 +2,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
+  const { pathname } = request.nextUrl;
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -17,38 +13,14 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value;
         },
         set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
+          const response = NextResponse.next();
+          response.cookies.set({ name, value, ...options });
+          return response;
         },
         remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value: "",
-            ...options,
-          });
+          const response = NextResponse.next();
+          response.cookies.set({ name, value: "", ...options });
+          return response;
         },
       },
     }
@@ -58,10 +30,16 @@ export async function middleware(request: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const isLoginPage = request.nextUrl.pathname === "/login";
-  const isDashboardPage = request.nextUrl.pathname === "/" || request.nextUrl.pathname.startsWith("/clients") || request.nextUrl.pathname.startsWith("/projects") || request.nextUrl.pathname.startsWith("/activity-logs") || request.nextUrl.pathname.startsWith("/credentials") || request.nextUrl.pathname.startsWith("/settings");
+  const isLoginPage = pathname === "/login";
+  const isProtectedRoute = pathname === "/" || 
+    pathname.startsWith("/clients") || 
+    pathname.startsWith("/projects") || 
+    pathname.startsWith("/activity-logs") || 
+    pathname.startsWith("/credentials") || 
+    pathname.startsWith("/settings") || 
+    pathname.startsWith("/crm");
 
-  if (!session && isDashboardPage) {
+  if (!session && isProtectedRoute) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -69,11 +47,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|api|public).*)",
+    "/",
+    "/login",
+    "/clients/:path*",
+    "/projects/:path*",
+    "/activity-logs/:path*",
+    "/credentials/:path*",
+    "/settings/:path*",
+    "/crm/:path*",
   ],
 };
