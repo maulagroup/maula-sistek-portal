@@ -25,6 +25,9 @@ import { getProjects } from "@/lib/actions/projects";
 import type { Project } from "@/types";
 import { DashboardRecentActivity } from "@/components/dashboard-recent-activity";
 import { DashboardQuickActions } from "@/components/dashboard-quick-actions";
+import { AddClientModal } from "@/components/add-client-modal";
+import { AddProjectModal } from "@/components/add-project-modal";
+import { AddActivityModal } from "@/components/add-activity-modal";
 
 type ReminderCategory =
   | "renewal-overdue"
@@ -45,19 +48,24 @@ export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ReminderCategory | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
+  const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
+  const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
+
+  const loadProjects = async () => {
+    try {
+      setLoading(true);
+      const data = await getProjects();
+      setProjects(data);
+    } catch (err) {
+      console.error("Failed to load projects:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await getProjects();
-        setProjects(data);
-      } catch (err) {
-        console.error("Failed to load projects:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    loadProjects();
   }, []);
 
   const today = new Date();
@@ -316,9 +324,35 @@ export default function DashboardPage() {
       </Dialog>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <DashboardQuickActions />
+        <DashboardQuickActions 
+          onAddClientClick={() => setIsAddClientModalOpen(true)}
+          onAddProjectClick={() => setIsAddProjectModalOpen(true)}
+          onAddActivityClick={() => setIsAddActivityModalOpen(true)}
+        />
         <DashboardRecentActivity />
       </div>
+
+      <AddClientModal 
+        open={isAddClientModalOpen}
+        onOpenChange={setIsAddClientModalOpen}
+        onSuccess={() => {
+          loadProjects();
+        }}
+      />
+      <AddProjectModal 
+        open={isAddProjectModalOpen}
+        onOpenChange={setIsAddProjectModalOpen}
+        onSuccess={() => {
+          loadProjects();
+        }}
+      />
+      <AddActivityModal 
+        open={isAddActivityModalOpen}
+        onOpenChange={setIsAddActivityModalOpen}
+        onSuccess={() => {
+          loadProjects();
+        }}
+      />
     </div>
   );
 }

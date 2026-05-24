@@ -111,15 +111,21 @@ function ProjectForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
-            <Input
-              id="status"
-              value={formData.status ?? "Leads"}
-              onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as ProjectStatus }))}
-              placeholder="Leads, Development, dll"
-              autoComplete="off"
-            />
-          </div>
+              <Label htmlFor="status">Status</Label>
+              <Select
+                value={formData.status ?? "Penawaran"}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, status: value as ProjectStatus }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Penawaran">Penawaran</SelectItem>
+                  <SelectItem value="Deal">Deal</SelectItem>
+                  <SelectItem value="Pembuatan">Pembuatan</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           <div className="space-y-2">
             <Label htmlFor="domain">Domain</Label>
             <Input
@@ -131,25 +137,33 @@ function ProjectForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="deployment_platform">Deployment Platform</Label>
-            <Input
-              id="deployment_platform"
-              value={formData.deployment_platform ?? ""}
-              onChange={(e) => setFormData(prev => ({ ...prev, deployment_platform: e.target.value || null }))}
-              placeholder="Vercel, Netlify, cPanel, dll"
-              autoComplete="off"
-            />
-          </div>
+              <Label htmlFor="deployment_platform">Deployment Platform</Label>
+              <Select
+                value={formData.deployment_platform ?? ""}
+                onValueChange={(value) => setFormData(prev => ({ ...prev, deployment_platform: value || null }))}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih deployment platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Domainesia, Cloudflare, Github, Vercel">Domainesia, Cloudflare, Github, Vercel</SelectItem>
+                  <SelectItem value="Domainesia, Cloudflare, Github, Vercel, Server">Domainesia, Cloudflare, Github, Vercel, Server</SelectItem>
+                  <SelectItem value="Cloudflare, Github, Vercel">Cloudflare, Github, Vercel</SelectItem>
+                  <SelectItem value="Cloudflare, Github, Vercel, Server">Cloudflare, Github, Vercel, Server</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           <div className="space-y-2">
-            <Label htmlFor="deadline">Deadline</Label>
-            <Input
-              id="deadline"
-              type="date"
-              value={formData.deadline ?? ""}
-              onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value || null }))}
-              autoComplete="off"
-            />
-          </div>
+              <Label htmlFor="deadline">Deadline</Label>
+              <Input
+                id="deadline"
+                type="date"
+                lang="id-ID"
+                value={formData.deadline ?? ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value || null }))}
+                autoComplete="off"
+              />
+            </div>
           <div className="space-y-2">
             <Label htmlFor="harga_project">Harga Project</Label>
             <Input
@@ -173,15 +187,16 @@ function ProjectForm({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="tanggal_renewal">Tanggal Renewal</Label>
-            <Input
-              id="tanggal_renewal"
-              type="date"
-              value={formData.tanggal_renewal ?? ""}
-              onChange={(e) => setFormData(prev => ({ ...prev, tanggal_renewal: e.target.value || null }))}
-              autoComplete="off"
-            />
-          </div>
+              <Label htmlFor="tanggal_renewal">Tanggal Renewal</Label>
+              <Input
+                id="tanggal_renewal"
+                type="date"
+                lang="id-ID"
+                value={formData.tanggal_renewal ?? ""}
+                onChange={(e) => setFormData(prev => ({ ...prev, tanggal_renewal: e.target.value || null }))}
+                autoComplete="off"
+              />
+            </div>
           <div className="space-y-2">
             <Label htmlFor="pic_internal">PIC Internal</Label>
             <Input
@@ -315,7 +330,7 @@ export default function ProjectsPage() {
       nama_project: "",
       client_id: "",
       jenis_layanan: "",
-      status: "Leads",
+      status: "Penawaran",
       domain: null,
       deployment_platform: null,
       deadline: null,

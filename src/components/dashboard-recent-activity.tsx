@@ -176,7 +176,7 @@ export function DashboardRecentActivity({ limit = 10 }: RecentActivityProps) {
     <Card className="border-slate-800 bg-slate-950/50">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2">
-          <Clock className="h-5 w-5" />
+
           Recent Activity
         </CardTitle>
       </CardHeader>
