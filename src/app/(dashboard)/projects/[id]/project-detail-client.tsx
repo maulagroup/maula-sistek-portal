@@ -35,10 +35,9 @@ const STATUS_COLORS: Record<string, string> = {
 
 interface ProjectDetailClientProps {
   project: Project;
-  isSuperAdmin: boolean;
 }
 
-export function ProjectDetailClient({ project, isSuperAdmin }: ProjectDetailClientProps) {
+export function ProjectDetailClient({ project }: ProjectDetailClientProps) {
   const router = useRouter();
   const [localProject, setLocalProject] = useState<Project>(project);
   const [clients, setClients] = useState<Client[]>([]);
@@ -387,7 +386,7 @@ export function ProjectDetailClient({ project, isSuperAdmin }: ProjectDetailClie
 
       <div className="space-y-10">
         <ProjectActivityTimeline projectId={localProject.id} />
-        <ProjectCredentials projectId={localProject.id} isSuperAdmin={isSuperAdmin} />
+        <ProjectCredentials projectId={localProject.id} />
       </div>
     </div>
   );

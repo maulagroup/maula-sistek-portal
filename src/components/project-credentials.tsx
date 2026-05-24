@@ -54,6 +54,7 @@ import {
   Database,
   Cloud,
   Shield,
+  Loader2,
 } from "lucide-react";
 import {
   getCredentialsByProjectId,
@@ -63,6 +64,7 @@ import {
 } from "@/lib/actions/credentials";
 import type { Credential, CreateCredentialInput } from "@/types";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/providers";
 
 const PLATFORMS = [
   "Vercel",
@@ -98,10 +100,10 @@ const copyToClipboard = async (text: string, label: string) => {
 
 interface ProjectCredentialsProps {
   projectId: string;
-  isSuperAdmin: boolean;
 }
 
-export function ProjectCredentials({ projectId, isSuperAdmin }: ProjectCredentialsProps) {
+export function ProjectCredentials({ projectId }: ProjectCredentialsProps) {
+  const { isSuperAdmin, isLoading: authLoading } = useAuth();
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [search, setSearch] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -217,6 +219,7 @@ export function ProjectCredentials({ projectId, isSuperAdmin }: ProjectCredentia
   }, [credentials, search]);
 
   const toggleShowPassword = (id: string) => {
+    if (!isSuperAdmin) return;
     setShowPasswords((prev) => ({
       ...prev,
       [id]: !prev[id],
@@ -226,6 +229,17 @@ export function ProjectCredentials({ projectId, isSuperAdmin }: ProjectCredentia
   useEffect(() => {
     loadCredentials();
   }, [loadCredentials]);
+
+  if (authLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <p className="text-muted-foreground">Loading auth...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -481,6 +495,32 @@ export function ProjectCredentials({ projectId, isSuperAdmin }: ProjectCredentia
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() => copyToClipboard(credential.password!, "password")}
+                              >
+                                <Copy className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                        {!isSuperAdmin && credential.password && (
+                          <div className="space-y-1 md:col-span-2">
+                            <p className="text-xs text-muted-foreground">Password</p>
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-medium font-mono text-muted-foreground">
+                                ••••••••••••
+                              </p>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 opacity-50 cursor-not-allowed"
+                                disabled
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 opacity-50 cursor-not-allowed"
+                                disabled
                               >
                                 <Copy className="h-3.5 w-3.5" />
                               </Button>

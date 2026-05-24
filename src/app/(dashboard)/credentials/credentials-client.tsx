@@ -22,9 +22,11 @@ import {
   FolderKanban,
   User,
   Clock,
+  Loader2,
 } from "lucide-react";
 import type { Credential } from "@/types";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/providers";
 
 const getPlatformIcon = (platform: string) => {
   const lower = platform.toLowerCase();
@@ -49,10 +51,10 @@ const copyToClipboard = async (text: string, label: string) => {
 
 interface CredentialsClientProps {
   credentials: Credential[];
-  isSuperAdmin: boolean;
 }
 
-export function CredentialsClient({ credentials, isSuperAdmin }: CredentialsClientProps) {
+export function CredentialsClient({ credentials }: CredentialsClientProps) {
+  const { isSuperAdmin, isLoading: authLoading } = useAuth();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
 
@@ -70,6 +72,7 @@ export function CredentialsClient({ credentials, isSuperAdmin }: CredentialsClie
   }, [credentials, search]);
 
   const toggleShowPassword = (id: string) => {
+    if (!isSuperAdmin) return;
     setShowPasswords((prev) => ({
       ...prev,
       [id]: !prev[id],
@@ -85,6 +88,17 @@ export function CredentialsClient({ credentials, isSuperAdmin }: CredentialsClie
       minute: "2-digit",
     });
   };
+
+  if (authLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <p className="text-muted-foreground">Loading auth...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -226,6 +240,36 @@ export function CredentialsClient({ credentials, isSuperAdmin }: CredentialsClie
                                 size="icon"
                                 className="h-7 w-7"
                                 onClick={() => copyToClipboard(credential.password!, "password")}
+                              >
+                                <Copy className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+
+                        {!isSuperAdmin && credential.password && (
+                          <div className="space-y-1">
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Key className="h-3 w-3" />
+                              Password
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm font-medium font-mono text-muted-foreground">
+                                ••••••••••••
+                              </p>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 opacity-50 cursor-not-allowed"
+                                disabled
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 opacity-50 cursor-not-allowed"
+                                disabled
                               >
                                 <Copy className="h-3.5 w-3.5" />
                               </Button>
