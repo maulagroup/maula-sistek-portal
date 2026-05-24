@@ -5,7 +5,7 @@ export class ActivityLogRepository {
   static async getByProjectId(projectId: string): Promise<ActivityLog[]> {
     const supabase = await createServerComponentClient();
     const { data, error } = await supabase
-      .from("activity_logs")
+      .from("project_logs")
       .select("*")
       .eq("project_id", projectId)
       .order("created_at", { ascending: false });
@@ -21,7 +21,7 @@ export class ActivityLogRepository {
   static async getAll(): Promise<ActivityLog[]> {
     const supabase = await createServerComponentClient();
     const { data, error } = await supabase
-      .from("activity_logs")
+      .from("project_logs")
       .select(`
         *,
         projects (
@@ -46,7 +46,7 @@ export class ActivityLogRepository {
   static async create(input: CreateActivityLogInput): Promise<ActivityLog> {
     const supabase = await createServerComponentClient();
     const { data, error } = await supabase
-      .from("activity_logs")
+      .from("project_logs")
       .insert([input])
       .select()
       .single();

@@ -56,11 +56,12 @@ export interface ActivityLog {
 export interface Credential {
   id: string;
   project_id: string;
-  name: string;
+  platform: string;
+  email_login: string | null;
   username: string | null;
   password: string | null;
-  url: string | null;
-  notes: string | null;
+  url_login: string | null;
+  catatan: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -6,7 +6,17 @@ export class CredentialRepository {
     const supabase = await createServerComponentClient();
     const { data, error } = await supabase
       .from("credentials")
-      .select("*")
+      .select(`
+        *,
+        projects (
+          id,
+          nama_project,
+          clients (
+            id,
+            nama_client
+          )
+        )
+      `)
       .order("created_at", { ascending: false });
 
     if (error) {
